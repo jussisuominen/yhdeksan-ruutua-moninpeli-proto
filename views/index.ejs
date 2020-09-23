@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yhdeksän ruutua</title>
+    <style>
+        .ruutu {
+            background: blue;
+            border: black solid 3px;
+            display: inline-block;
+            width: 150px;
+            height: 150px;
+            position: relative;
+        }
+
+        .nappula {
+            border: solid;
+            border-radius: 50%;
+            display: inline-block;
+            width: 125px;
+            height: 125px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+        }
+
+        .pelaaja1 {
+            background: black;
+        }
+
+        .pelaaja2 {
+            background: white;
+            border-color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- PELILAUTA -->
+    <% if(vuoro == pelaaja && pelilauta[0] == 0) { %>
+        <a href="/aseta-nappula?pelaaja=<%= pelaaja %>&ruutu=0">
+    <% } %>
+        <span class="ruutu">
+        <% if(pelilauta[0] == 1) { %>
+            <span class="nappula pelaaja1"></span>
+        <% } %>
+
+        <% if(pelilauta[0] == 2) { %>
+            <span class="nappula pelaaja2"></span>
+        <% } %>
+    </span>
+    <% if(vuoro == pelaaja) { %>
+        </a>
+    <% } %>
+    <span class="ruutu">
+        <% if(pelilauta[1] == 1) { %>
+            <span class="nappula pelaaja1"></span>
+        <% } %>
+
+        <% if(pelilauta[1] == 2) { %>
+            <span class="nappula pelaaja2"></span>
+        <% } %>
+    </span>
+    <span class="ruutu">
+        <% if(pelilauta[2] == 1) { %>
+            <span class="nappula pelaaja1"></span>
+        <% } %>
+
+        <% if(pelilauta[2] == 2) { %>
+            <span class="nappula pelaaja2"></span>
+        <% } %>
+    </span>
+    <br/>
+    <span class="ruutu">
+        <% if(pelilauta[3] == 1) { %>
+            <span class="nappula pelaaja1"></span>
+        <% } %>
+
+        <% if(pelilauta[3] == 2) { %>
+            <span class="nappula pelaaja2"></span>
+        <% } %>
+    </span>
+    <span class="ruutu">
+        <% if(pelilauta[4] == 1) { %>
+            <span class="nappula pelaaja1"></span>
+        <% } %>
+
+        <% if(pelilauta[4] == 2) { %>
+            <span class="nappula pelaaja2"></span>
+        <% } %>
+    </span>
+    <span class="ruutu">
+        <% if(pelilauta[5] == 1) { %>
+            <span class="nappula pelaaja1"></span>
+        <% } %>
+
+        <% if(pelilauta[5] == 2) { %>
+            <span class="nappula pelaaja2"></span>
+        <% } %>
+    </span>
+    <br/>
+    <span class="ruutu">
+        <% if(pelilauta[6] == 1) { %>
+            <span class="nappula pelaaja1"></span>
+        <% } %>
+
+        <% if(pelilauta[6] == 2) { %>
+            <span class="nappula pelaaja2"></span>
+        <% } %>
+    </span>
+    <span class="ruutu">
+        <% if(pelilauta[7] == 1) { %>
+            <span class="nappula pelaaja1"></span>
+        <% } %>
+
+        <% if(pelilauta[7] == 2) { %>
+            <span class="nappula pelaaja2"></span>
+        <% } %>
+    </span>
+    <span class="ruutu">
+        <% if(pelilauta[8] == 1) { %>
+            <span class="nappula pelaaja1"></span>
+        <% } %>
+
+        <% if(pelilauta[8] == 2) { %>
+            <span class="nappula pelaaja2"></span>
+        <% } %>
+    </span>
+
+    <div>
+        <% if(vuoro != pelaaja) { %>
+            <%= "Odotetaan vastustajan siirtoa" %>
+        <% } %>
+    </div>
+
+    Vuoro: <%= vuoro %>
+</body>
+</html>
