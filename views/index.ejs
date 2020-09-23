@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>Yhdeksän ruutua</title>
     <style>
         .ruutu {
@@ -35,27 +37,60 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Piirretään pelilauta -->
     <% for(let i = 0; i < ruudut.length; i++) { %>
-        <% if(pelaaja == vuoro) { %>
-            <a href="/aseta-nappula?pelaaja=<%= pelaaja %>&ruutu=<%= i %>">
+    <% if(pelaaja == vuoro && ruudut[i] == 0) { %>
+    <a href="/aseta-nappula?pelaaja=<%= pelaaja %>&ruutu=<%= i %>">
         <% } %>
-        <span class="ruutu"></span>
+        <span class="ruutu">
+            <% if(ruudut[i] != 0) { %>
+            <span class="nappula pelaaja<%= ruudut[i] %>"></span>
+            <% } %>
+        </span>
 
         <% if(pelaaja == vuoro) { %>
-            </a>
-        <% } %>
-        <!-- Seuraava koodi mahdollistaa pelilaudan rivien piirtämisen. Koodissa tarkistetaan,
+    </a>
+    <% } %>
+    <!-- Seuraava koodi mahdollistaa pelilaudan rivien piirtämisen. Koodissa tarkistetaan,
         onko kaikki rivin ruudut piirretty ja jos on, siirrytään piirtämään seuraavaa riviä
         lisäämällä HTML-dokumenttiin rivinvaihtotagi. Tarkemmin sanottuna koodissa tarkistetaan,
         onko käsittelyssä rivin viimeinen ruutu. Ensimmäisen rivin viimeisen ruudun indeksi on 2,
         toisen 5 ja kolmannen 8 (huom. indeksit alkavat nollasta). -->
-        <% if(i == 2 || i == 5 || i == 8) { %>
-            <br/>
-        <% } %>
+    <% if(i == 2 || i == 5 || i == 8) { %>
+    <br />
+    <% } %>
     <% } %>
 
-    <%= 
+    <% if(pelaaja != vuoro) { %>
+    <p>Odotetaan vastustajan siirtoa...</p>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const pelaaja = urlParams.get('pelaaja');
+
+        //console.log(pelaaja);
+
+        setInterval(() => {
+            axios.get('/vuoro')
+                .then(function (response) {
+                    // handle success
+                    //console.log(response);
+                    if(response.data.vuoro == pelaaja) {
+                        location.reload();
+                    }
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+                .then(function () {
+                    // always executed
+                });
+        }, 1000);
+    </script>
+    <% } %>
 </body>
+
 </html>

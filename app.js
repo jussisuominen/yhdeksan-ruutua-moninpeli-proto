@@ -28,7 +28,7 @@ app.get('/aseta-nappula', (req, res) => {
     console.log('Asetetaan nappulaa...');
 
     // Aseta nappula ruutuun, jos se on tyhjä
-    pelilauta[req.query.ruutu] = req.query.pelaaja;
+    ruudut[req.query.ruutu] = req.query.pelaaja;
 
     if(vuoro == 1) {
         vuoro = 2;
@@ -37,7 +37,11 @@ app.get('/aseta-nappula', (req, res) => {
     }
 
     res.redirect('/?pelaaja=' + req.query.pelaaja);
-}); 
+});
+
+app.get('/vuoro', (req, res) => {
+    res.send({ vuoro });
+});
 
 app.listen(3000, () => {
     console.log(`Palvelin on toiminnassa. Osoite: http://localhost:3000`)
