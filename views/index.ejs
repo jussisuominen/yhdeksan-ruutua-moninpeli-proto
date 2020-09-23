@@ -38,7 +38,14 @@
 <body>
     <!-- Piirretään pelilauta -->
     <% for(let i = 0; i < ruudut.length; i++) { %>
+        <% if(pelaaja == vuoro) { %>
+            <a href="/aseta-nappula?pelaaja=<%= pelaaja %>&ruutu=<%= i %>">
+        <% } %>
         <span class="ruutu"></span>
+
+        <% if(pelaaja == vuoro) { %>
+            </a>
+        <% } %>
         <!-- Seuraava koodi mahdollistaa pelilaudan rivien piirtämisen. Koodissa tarkistetaan,
         onko kaikki rivin ruudut piirretty ja jos on, siirrytään piirtämään seuraavaa riviä
         lisäämällä HTML-dokumenttiin rivinvaihtotagi. Tarkemmin sanottuna koodissa tarkistetaan,
@@ -48,5 +55,7 @@
             <br/>
         <% } %>
     <% } %>
+
+    <%= 
 </body>
 </html>
