@@ -36,103 +36,17 @@
     </style>
 </head>
 <body>
-    <!-- PELILAUTA -->
-    <% if(vuoro == pelaaja && pelilauta[0] == 0) { %>
-        <a href="/aseta-nappula?pelaaja=<%= pelaaja %>&ruutu=0">
+    <!-- Piirretään pelilauta -->
+    <% for(let i = 0; i < ruudut.length; i++) { %>
+        <span class="ruutu"></span>
+        <!-- Seuraava koodi mahdollistaa pelilaudan rivien piirtämisen. Koodissa tarkistetaan,
+        onko kaikki rivin ruudut piirretty ja jos on, siirrytään piirtämään seuraavaa riviä
+        lisäämällä HTML-dokumenttiin rivinvaihtotagi. Tarkemmin sanottuna koodissa tarkistetaan,
+        onko käsittelyssä rivin viimeinen ruutu. Ensimmäisen rivin viimeisen ruudun indeksi on 2,
+        toisen 5 ja kolmannen 8 (huom. indeksit alkavat nollasta). -->
+        <% if(i == 2 || i == 5 || i == 8) { %>
+            <br/>
+        <% } %>
     <% } %>
-        <span class="ruutu">
-        <% if(pelilauta[0] == 1) { %>
-            <span class="nappula pelaaja1"></span>
-        <% } %>
-
-        <% if(pelilauta[0] == 2) { %>
-            <span class="nappula pelaaja2"></span>
-        <% } %>
-    </span>
-    <% if(vuoro == pelaaja) { %>
-        </a>
-    <% } %>
-    <span class="ruutu">
-        <% if(pelilauta[1] == 1) { %>
-            <span class="nappula pelaaja1"></span>
-        <% } %>
-
-        <% if(pelilauta[1] == 2) { %>
-            <span class="nappula pelaaja2"></span>
-        <% } %>
-    </span>
-    <span class="ruutu">
-        <% if(pelilauta[2] == 1) { %>
-            <span class="nappula pelaaja1"></span>
-        <% } %>
-
-        <% if(pelilauta[2] == 2) { %>
-            <span class="nappula pelaaja2"></span>
-        <% } %>
-    </span>
-    <br/>
-    <span class="ruutu">
-        <% if(pelilauta[3] == 1) { %>
-            <span class="nappula pelaaja1"></span>
-        <% } %>
-
-        <% if(pelilauta[3] == 2) { %>
-            <span class="nappula pelaaja2"></span>
-        <% } %>
-    </span>
-    <span class="ruutu">
-        <% if(pelilauta[4] == 1) { %>
-            <span class="nappula pelaaja1"></span>
-        <% } %>
-
-        <% if(pelilauta[4] == 2) { %>
-            <span class="nappula pelaaja2"></span>
-        <% } %>
-    </span>
-    <span class="ruutu">
-        <% if(pelilauta[5] == 1) { %>
-            <span class="nappula pelaaja1"></span>
-        <% } %>
-
-        <% if(pelilauta[5] == 2) { %>
-            <span class="nappula pelaaja2"></span>
-        <% } %>
-    </span>
-    <br/>
-    <span class="ruutu">
-        <% if(pelilauta[6] == 1) { %>
-            <span class="nappula pelaaja1"></span>
-        <% } %>
-
-        <% if(pelilauta[6] == 2) { %>
-            <span class="nappula pelaaja2"></span>
-        <% } %>
-    </span>
-    <span class="ruutu">
-        <% if(pelilauta[7] == 1) { %>
-            <span class="nappula pelaaja1"></span>
-        <% } %>
-
-        <% if(pelilauta[7] == 2) { %>
-            <span class="nappula pelaaja2"></span>
-        <% } %>
-    </span>
-    <span class="ruutu">
-        <% if(pelilauta[8] == 1) { %>
-            <span class="nappula pelaaja1"></span>
-        <% } %>
-
-        <% if(pelilauta[8] == 2) { %>
-            <span class="nappula pelaaja2"></span>
-        <% } %>
-    </span>
-
-    <div>
-        <% if(vuoro != pelaaja) { %>
-            <%= "Odotetaan vastustajan siirtoa" %>
-        <% } %>
-    </div>
-
-    Vuoro: <%= vuoro %>
 </body>
 </html>

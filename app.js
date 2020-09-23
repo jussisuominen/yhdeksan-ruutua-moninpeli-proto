@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-let pelilauta = [ 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let ruudut = [ 0, 0, 0, 0, 0, 0, 0, 0, 0];
 let vuoro = 1;
 
 app.set('view engine', 'ejs')
@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 
     // console.log('Vuoro: ' + vuoro);
 
-    res.render('index', { pelilauta, pelaaja, vuoro })
+    res.render('index', { ruudut, pelaaja, vuoro })
     //console.log(pelilauta)
 });
 
