@@ -1,13 +1,22 @@
 const express = require('express');
 const app = express();
 
+// Seuraava taulukko edustaa pelilaudan ruutuja. Jokainen taulukon alkio
+// vastaa ruudun tilaa eli sitä, onko se tyhjä (0) vai onko ruudussa
+// pelaajan 1 tai 2 nappula. Tämä muuttuja välitetään päänäkymälle (views/index.js),
+// joka sitten piirtää pelilaudan tämän taulukon arvojen perusteella.
 let ruudut = [ 0, 0, 0, 0, 0, 0, 0, 0, 0];
-let vuoro = 1;
+let vuoro = 1; // Kumpi pelaaja on vuorossa?
+let peliPäättynyt = false; 
 
 app.set('view engine', 'ejs')
 
+// Tämä on sovelluksen pääreitti, joka näyttää sovelluksen päänäkymän (index.ejs). Reitissä
+// myös tarkistetaan jokaisen siirron jälkeen, onko jompi kumpi pelaajista saanut muodostettua
+// rivin.
 app.get('/', (req, res) => {
     console.log(req.query);
+
     const pelaaja = req.query.pelaaja;
 
     // if(req.query.ruutu && req.query.pelaaja == vuoro) {
@@ -20,7 +29,15 @@ app.get('/', (req, res) => {
 
     // console.log('Vuoro: ' + vuoro);
 
-    res.render('index', { ruudut, pelaaja, vuoro })
+    // Tarkista, onko rivi muodostettu.
+    for(i = 0; i < 9; i++) {
+        if(ruudut[i] == 1 && ruudut[i+1] == 1 && ruudut[i+2] == 1) {
+            console.log("Rivi muodostettu!");
+            peliPäättynyt = true;
+        }
+    }
+
+    res.render('index', { ruudut, pelaaja, vuoro, peliPäättynyt })
     //console.log(pelilauta)
 });
 
@@ -30,15 +47,21 @@ app.get('/aseta-nappula', (req, res) => {
     // Aseta nappula ruutuun, jos se on tyhjä
     ruudut[req.query.ruutu] = req.query.pelaaja;
 
+    // Siirrä vuoro toiselle pelaajalle.
     if(vuoro == 1) {
         vuoro = 2;
     } else {
         vuoro = 1;
     }
 
+    // Uudelleenohjaa päänäkymään ja välitä parametrina pelaajan numero
     res.redirect('/?pelaaja=' + req.query.pelaaja);
 });
 
+// Tämä reitti palauttaa yksinkertaisesti vuorossa olevan pelaajan. Tätä reittiä
+// hyödynnetään päänäkymässä silloin, kun odotetaan vastustajan siirtoa. Päänäkymä pyytää
+// tällöin axios:in avulla tiedon vuorossa olevasta pelaajasta sekunnin välein. Tästä
+// löydät lisää kommentteja tiedostosta index.ejs.
 app.get('/vuoro', (req, res) => {
     res.send({ vuoro });
 });

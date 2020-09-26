@@ -41,55 +41,63 @@
 <body>
     <!-- Piirretään pelilauta -->
     <% for(let i = 0; i < ruudut.length; i++) { %>
-    <% if(pelaaja == vuoro && ruudut[i] == 0) { %>
-    <a href="/aseta-nappula?pelaaja=<%= pelaaja %>&ruutu=<%= i %>">
+        <% // Lisää linkki, jolla pelaaja voi asettaa nappulan ruutuun, jos pelaajalla %>
+        <% // on vuoro, ruutu on tyhjä (ruudut[i] == 0) eikä peli ole päättynyt. %>
+        <% if(pelaaja == vuoro && ruudut[i] == 0 && !peliPäättynyt) { %>
+            <a href="/aseta-nappula?pelaaja=<%= pelaaja %>&ruutu=<%= i %>">
         <% } %>
         <span class="ruutu">
-            <% if(ruudut[i] != 0) { %>
+        <% // Piirrä nappula, jos ruudussa on nappula. Ruudussa on nappula, jos %>
+        <% // sen arvo on 0. %>
+        <% if(ruudut[i] != 0) { %>
             <span class="nappula pelaaja<%= ruudut[i] %>"></span>
-            <% } %>
+        <% } %>
         </span>
 
         <% if(pelaaja == vuoro) { %>
-    </a>
+            </a>
+        <% } %>
+        <!-- Seuraava koodi mahdollistaa pelilaudan rivien piirtämisen. Koodissa tarkistetaan,
+            onko kaikki rivin ruudut piirretty ja jos on, siirrytään piirtämään seuraavaa riviä
+            lisäämällä HTML-dokumenttiin rivinvaihtotagi. Tarkemmin sanottuna koodissa tarkistetaan,
+            onko käsittelyssä rivin viimeinen ruutu. Ensimmäisen rivin viimeisen ruudun indeksi on 2,
+            toisen 5 ja kolmannen 8 (huom. indeksit alkavat nollasta). -->
+        <% if(i == 2 || i == 5 || i == 8) { %>
+            <br />
+        <% } %>
     <% } %>
-    <!-- Seuraava koodi mahdollistaa pelilaudan rivien piirtämisen. Koodissa tarkistetaan,
-        onko kaikki rivin ruudut piirretty ja jos on, siirrytään piirtämään seuraavaa riviä
-        lisäämällä HTML-dokumenttiin rivinvaihtotagi. Tarkemmin sanottuna koodissa tarkistetaan,
-        onko käsittelyssä rivin viimeinen ruutu. Ensimmäisen rivin viimeisen ruudun indeksi on 2,
-        toisen 5 ja kolmannen 8 (huom. indeksit alkavat nollasta). -->
-    <% if(i == 2 || i == 5 || i == 8) { %>
-    <br />
-    <% } %>
+
+    <% if(peliPäättynyt) { %>
+        <p>Peli on päättynyt!</p>
     <% } %>
 
-    <% if(pelaaja != vuoro) { %>
-    <p>Odotetaan vastustajan siirtoa...</p>
+    <% if(pelaaja != vuoro && !peliPäättynyt) { %>
+        <p>Odotetaan vastustajan siirtoa...</p>
 
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const pelaaja = urlParams.get('pelaaja');
+        <script>
+            const urlParams = new URLSearchParams(window.location.search);
+            const pelaaja = urlParams.get('pelaaja');
 
-        //console.log(pelaaja);
+            //console.log(pelaaja);
 
-        setInterval(() => {
-            axios.get('/vuoro')
-                .then(function (response) {
-                    // handle success
-                    //console.log(response);
-                    if(response.data.vuoro == pelaaja) {
-                        location.reload();
-                    }
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-                .then(function () {
-                    // always executed
-                });
-        }, 1000);
-    </script>
+            setInterval(() => {
+                axios.get('/vuoro')
+                    .then(function (response) {
+                        // handle success
+                        //console.log(response);
+                        if(response.data.vuoro == pelaaja) {
+                            location.reload();
+                        }
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
+                    });
+            }, 1000);
+        </script>
     <% } %>
 </body>
 
