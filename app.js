@@ -7,6 +7,7 @@ const app = express();
 // joka sitten piirtää pelilaudan tämän taulukon arvojen perusteella.
 let ruudut = [ 0, 0, 0, 0, 0, 0, 0, 0, 0];
 let vuoro = 1; // Kumpi pelaaja on vuorossa?
+let nappuloitaAsetettu = [0, 0]; // Kuinka paljon pelaaja on asettanut nappuloita?
 let peliPäättynyt = false; 
 
 app.set('view engine', 'ejs')
@@ -16,8 +17,11 @@ app.set('view engine', 'ejs')
 // rivin.
 app.get('/', (req, res) => {
     console.log(req.query);
+    console.log(nappuloitaAsetettu);
 
     const pelaaja = req.query.pelaaja;
+
+    console.log(pelaaja);
 
     // if(req.query.ruutu && req.query.pelaaja == vuoro) {
     //     // Aseta nappula ruutuun.
@@ -37,14 +41,16 @@ app.get('/', (req, res) => {
         }
     }
 
-    res.render('index', { ruudut, pelaaja, vuoro, peliPäättynyt })
+    res.render('index', { ruudut, pelaaja, vuoro, peliPäättynyt, nappuloitaAsetettu: nappuloitaAsetettu[pelaaja-1] })
     //console.log(pelilauta)
 });
 
 app.get('/aseta-nappula', (req, res) => {
     console.log('Asetetaan nappulaa...');
 
-    // Aseta nappula ruutuun, jos se on tyhjä
+    const pelaaja = req.query.pelaaja;
+
+    // Aseta nappula ruutuun.
     ruudut[req.query.ruutu] = req.query.pelaaja;
 
     // Siirrä vuoro toiselle pelaajalle.
@@ -53,6 +59,8 @@ app.get('/aseta-nappula', (req, res) => {
     } else {
         vuoro = 1;
     }
+
+    nappuloitaAsetettu[pelaaja-1]++;
 
     // Uudelleenohjaa päänäkymään ja välitä parametrina pelaajan numero
     res.redirect('/?pelaaja=' + req.query.pelaaja);

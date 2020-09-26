@@ -43,14 +43,20 @@
     <% for(let i = 0; i < ruudut.length; i++) { %>
         <% // Lisää linkki, jolla pelaaja voi asettaa nappulan ruutuun, jos pelaajalla %>
         <% // on vuoro, ruutu on tyhjä (ruudut[i] == 0) eikä peli ole päättynyt. %>
-        <% if(pelaaja == vuoro && ruudut[i] == 0 && !peliPäättynyt) { %>
+        <% if(pelaaja == vuoro && ruudut[i] == 0 && !peliPäättynyt && nappuloitaAsetettu < 3) { %>
             <a href="/aseta-nappula?pelaaja=<%= pelaaja %>&ruutu=<%= i %>">
         <% } %>
         <span class="ruutu">
         <% // Piirrä nappula, jos ruudussa on nappula. Ruudussa on nappula, jos %>
         <% // sen arvo on 0. %>
         <% if(ruudut[i] != 0) { %>
+            <% if(nappuloitaAsetettu == 3) { %>
+                <a href="/valitse-nappula?ruutu=<%= i %>">
+            <% } %>
             <span class="nappula pelaaja<%= ruudut[i] %>"></span>
+            <% if(nappuloitaAsetettu == 3) { %>
+                </a>
+            <% } %>
         <% } %>
         </span>
 
@@ -71,10 +77,16 @@
         <p>Peli on päättynyt!</p>
     <% } %>
 
+    Nappuloita asetettu: <%= nappuloitaAsetettu %>
+
+    <% // Odota vastustajan siirtoa... %>
     <% if(pelaaja != vuoro && !peliPäättynyt) { %>
         <p>Odotetaan vastustajan siirtoa...</p>
 
         <script>
+            // Tämä skripti mahdollistaa vastustajan siirron odottamisen. Skripti hakee palvelimelta tiedon
+            // vuorossa olevasta pelaajasta sekunnin välein ja lataa sitten sivun uudelleen, kun vastustaja on suorittanut
+            // siirron.
             const urlParams = new URLSearchParams(window.location.search);
             const pelaaja = urlParams.get('pelaaja');
 
@@ -92,9 +104,6 @@
                     .catch(function (error) {
                         // handle error
                         console.log(error);
-                    })
-                    .then(function () {
-                        // always executed
                     });
             }, 1000);
         </script>
